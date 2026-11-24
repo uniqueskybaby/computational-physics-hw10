@@ -1,0 +1,49 @@
+name: Reproduce SOR assignment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  verify:
+    name: Verify numerical experiments
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out the triggering commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Run standard-library checks
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 --version
+          python3 -S -m unittest -v
+          python3 -S main.py --smoke
+      - name: Set up the experiment environment
+        run: |
+          python3 -m venv .venv
+          .venv/bin/python -m pip install -r requirements.txt
+          .venv/bin/python -m pip check
+          .venv/bin/python -c 'import platform, numpy, matplotlib; print(platform.python_version(), numpy.__version__, matplotlib.__version__)'
+      - name: Rerun the independent checks and all experiments
+        run: |
+          .venv/bin/python -W error::RuntimeWarning main.py --validate
+          .venv/bin/python -W error::RuntimeWarning main.py --output "$RUNNER_TEMP/sor-results"
+          python3 -S verify_results.py "$RUNNER_TEMP/sor-results" > "$RUNNER_TEMP/sor-verification.json"
+          cat "$RUNNER_TEMP/sor-verification.json"
+          {
+            printf '## SOR experiment verification\n\nCommit `%s`\n\n' "$GITHUB_SHA"
+            printf '```json\n'
+            cat "$RUNNER_TEMP/sor-verification.json"
+            printf '```\n'
+          } >> "$GITHUB_STEP_SUMMARY"
