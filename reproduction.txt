@@ -1,0 +1,5 @@
+Independent checks: dense vs. SOR, sine vs. dense, hand sweep, cap, Jacobi, spectrum.
+N=63, m=0.2: GS 316, SOR 63 at omega=1.681, theory 1.741341
+N=63, m=0.5: GS 68, SOR 30 at omega=1.405, theory 1.491361
+N=63, m=1: GS 23, SOR 17 at omega=1.158, theory 1.248999
+Wrote 576 scan records and independent validation to results.
