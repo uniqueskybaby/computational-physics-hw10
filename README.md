@@ -24,6 +24,8 @@ python3 -S verify_results.py reproduced
 
 完整实验将全部表格数据和五组图写入 `reproduced/`。校验程序逐项比较新输出和仓库中的数据，并检查五组图是否成功导出。直接运行 `python3 main.py` 则写入默认的 `results/`。
 
+GitHub 托管运行的测试、提交版本和关键输出见 [复现记录](verification.md)。
+
 ## 结果速查
 
 | $m$ | $e^{-1}$ 插值距离 / 格 | 实测代表 $\omega$ | SOR 轮数 | GS 轮数 | 理论 $\omega$ |
