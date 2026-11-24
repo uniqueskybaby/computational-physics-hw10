@@ -19,9 +19,10 @@ python3 -S main.py --smoke
 python3 -m pip install -r requirements.txt
 python3 main.py --validate
 python3 main.py --output reproduced
+python3 -S verify_results.py reproduced
 ```
 
-完整实验将全部表格数据和五组图写入 `reproduced/`。直接运行 `python3 main.py` 则写入默认的 `results/`。
+完整实验将全部表格数据和五组图写入 `reproduced/`。校验程序逐项比较新输出和仓库中的数据，并检查五组图是否成功导出。直接运行 `python3 main.py` 则写入默认的 `results/`。
 
 ## 结果速查
 
@@ -44,4 +45,4 @@ python3 main.py --output reproduced
 | 残差曲线与谱理论 | [残差图](results/figures/convergence.pdf) · [逐轮残差](results/data/residual_history.csv) · [理论参数与紧阈值复算](results/summary.json) |
 | 区域大小与非中心源 | [边界和源位对照图](results/figures/boundaries.pdf) · [边界截面数据](results/data/boundary_profiles.csv) |
 
-`sor.py` 实现五点更新和全格点残差，`experiments.py` 组织各组对照，`plot_results.py` 从保存的数据生成图。模型推导、停止准则和结果解释见 [计算报告](report.md) 与 [排版 PDF](report.pdf)，评分标准见 [课程题面](assignment.md)。
+`sor.py` 实现五点更新和全格点残差，`experiments.py` 组织各组对照，`plot_results.py` 从保存的数据生成图。模型推导、停止准则和结果解释见 [计算报告](report.md) 与 [排版 PDF](report.pdf)，实验条件见 [实验说明](assignment.md)。
